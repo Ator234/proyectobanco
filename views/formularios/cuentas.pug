@@ -1,0 +1,49 @@
+extends ../layout/index
+
+block contenido
+    main.flex-grow-1.d-flex.justify-content-center.flex-column.align-items-center.fondo
+        .container
+            .row.justify-content-center
+                .col-lg-8.col-md-10
+                    .card.shadow-lg
+                        .card-header.text-center.py-4
+                            h3.mb-0 Crear una cuenta
+                        .card-body.p-4.p-md-5
+                            form(action="/cuenta/crear" method="POST")
+                                .row.g-3.mb-3
+                                    .col-md-12
+                                        .form-floating
+                                            input#iban.form-control(type='text' readonly='' required='' name='iban')
+                                            label(for='iban') IBAN
+                                .mb-3
+                                    .form-floating
+                                        select#tipo.form-select(name='tipo')
+                                            option(selected='' disabled='' value='') Seleccionar
+                                            option(value='AHORRO') Ahorro
+                                            option(value='CORRIENTE') Corriente
+                                            option(value='NOMINA') Nómina
+                                        label(for='tipo') Tipo de cuenta
+                                .row.g-3.mb-3
+                                    .col-md-6
+                                        .form-floating
+                                            input#creacion.form-control(type='date' name='fecha')
+                                            label(for='creacion') Fecha de creación
+                                    .col-md-6
+                                        .form-floating
+                                            input#monto.form-control(type='number' value='0' required='' name='monto')
+                                            label(for='monto') Dinero
+                                .d-grid.gap-2
+                                    button#confirmar.btn.btn-primary.btn-custom.btn-lg.shadow-sm(type='submit')
+                                        | Crear cuenta
+block scripts
+    script(src='/js/formularios.js')
+    script.
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('iban').value=generarIban();
+        });
+    if error
+        script.
+            const mensajeError = "#{error}";
+            if (mensajeError) {
+                alert(mensajeError);
+            }

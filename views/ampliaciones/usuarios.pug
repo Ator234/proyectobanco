@@ -1,0 +1,68 @@
+extends ../layout/index
+
+block contenido
+    main.flex-grow-1.d-flex.justify-content-center.align-items-center.fondo
+        // D I V    P R I N C I P A L     P A R A     D I V I D I R      D E N T R O     L A      P A G I N A
+        .row.flex-grow-1.d-flex.m-5.justify-content-center
+            h3.mb-5.text-center(style='font-size: 30px; font-weight: bold;') Más información sobre: #{nombre}
+            .col-md-8
+                form(action="/actualizar/usuario" method="POST")
+                    // S E C C I O N     I N F O R M A C I O N     P R I N C I P A L   (COMO LA QUE ESTA EN LA BDD)
+                    .row.g-3.mb-3
+                        .col-md-8
+                            .form-floating
+                                input#dni.form-control.fondoAmarillo.modificable(type='text' name='dni' readonly='' value=dni)
+                                label(for='dni') DNI
+                        .col-md-4
+                            .form-floating
+                                input#edad.form-control.fondoAmarillo.modificable.sin-flechas(type='number' name='edad' min='1' max='120' value=edad readonly='')
+                                label(for='edad') Edad
+                    .row.g-3.mb-3
+                        .col-md-6
+                            .form-floating
+                                input#nombre.form-control.fondoAmarillo.modificable(type='text' value=nombre name='nombre' readonly='')
+                                label(for='nombre') Nombre
+                        .col-md-6
+                            .form-floating
+                                input#apellidos.form-control.fondoAmarillo.modificable(type='text' value=apellidos name='apellidos' readonly='')
+                                label(for='apellidos') Apellidos
+                    .mb-4
+                        .form-floating
+                            input#direccion.form-control.fondoAmarillo(type='text' name='direccion' value=direccion readonly='')
+                            label(for='direccion') Dirección Completa
+                    .row.g-3.mb-5.d-flex.align-items-center.justify-content-center.gap-md-5.gap-2
+                        a#btnBorrrar.btn.btn-primary.btn-danger.btn-lg.shadow-sm.col-md-3(href=`/baja/usuario/${dni}`)
+                            | Borrar
+                        button#btnActualizar.btn.btn-primary.btn-warning.btn-lg.shadow-sm.col-md-3(type='button' onclick='mostrarConfirmar("usuarios")')
+                            | Actualizar
+                        a#btnCancelar.btn.btn-primary.btn-danger.btn-lg.shadow-sm.col-md-3.d-none(href=`/ampliacionUsuarios/${dni}`)
+                            | Cancelar
+                        // E S T E   E N    U N    P R I N C I P I O     N O     E S    V I S I B L E
+                        button#btnConfirmar.btn.btn-primary.btn-success.btn-lg.shadow-sm.col-md-3.d-none(type='submit')
+                            | Confirmar
+                // S E C C I O N     I N F O R M A C I O N     P R I N C I P A L   (COMO LA QUE ESTA EN LA BDD)
+                // S E G U N D A     S E C C I O N     (acciones complementarias)
+                h5.mb-3.text-center(style='font-size: 30px; font-weight: bold;') Información adicional
+                .row.g-3.mb-3
+                    .col-md-6
+                        .form-floating
+                            input#dineroTotal.form-control.fondoAmarillo.sin-flechas(type='number' value=dineroTotal readonly='')
+                            label(for='dineroTotal') Dinero total:
+                    .col-md-6
+                        .form-floating
+                            input#numeroCuentas.form-control.fondoAmarillo.sin-flechas(type='number' value=cuentasTotales readonly='')
+                            label(for='numeroCuentas') Número total de cuentas:
+                .row.g-3.mb-3.d-flex.align-items-center.justify-content-center.gap-md-5.gap-2
+                    a#btnTransaccion.btn.btn-secondary.btn-lg.shadow-sm.col-md-3(href=`/cargarTransaccionUsuario/${dni}`)
+                        | Realizar transacción
+
+                    a#btnCrearCuenta.btn.btn-secondary.btn-lg.shadow-sm.col-md-3(href=`/cargarVinculoUsuario/${dni}`)
+                        | Añadir una cuenta
+block scripts
+    script(src='/js/ampliaciones.js')
+    if error
+        script.
+            const mensajeError = "#{error}";
+            if (mensajeError) {
+                alert(mensajeError);
+            }

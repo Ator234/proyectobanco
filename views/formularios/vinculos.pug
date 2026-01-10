@@ -1,0 +1,37 @@
+extends ../layout/index
+
+block contenido
+    main.flex-grow-1.d-flex.justify-content-center.flex-column.align-items-center.fondo
+        .container
+            .row.justify-content-center
+                .col-lg-8.col-md-10
+                    .card.shadow-lg
+                        .card-header.text-center.py-4
+                            h3.mb-0 Vincularse a una cuenta
+                        .card-body.p-4.p-md-5
+                            form(action="/vinculo/crear" method="POST")
+                                .row.g-3.mb-3
+                                    .col-md-6
+                                        .form-floating
+                                            input#dni.form-control(type='text' required='' oninput=`comprobarValidez('dni',9)` name='dni')
+                                            label(for='dni') DNI
+                                    .col-md-6
+                                        .form-floating
+                                            input#participacion.form-control(type='number' min='10' max='100' required='' value=100 name='participacion')
+                                            label(for='participacion') Participación (En porcentaje)
+                                .row.g-3.mb-3
+                                    .col-md-12
+                                        .form-floating
+                                            input#iban.form-control(type='text' required='' oninput=`comprobarValidez('iban',18)` name='iban')
+                                            label(for='iban') IBAN
+                                .d-grid.gap-2
+                                    button#confirmar.btn.btn-primary.btn-custom.btn-lg.shadow-sm(type='submit')
+                                        | Vincularse
+block scripts
+    script(src='/js/formularios.js')
+    if error
+        script.
+            const mensajeError = "#{error}";
+            if (mensajeError) {
+                alert(mensajeError);
+            }

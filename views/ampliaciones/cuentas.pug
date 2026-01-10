@@ -1,0 +1,73 @@
+extends ../layout/index
+
+block contenido
+    main.flex-grow-1.d-flex.justify-content-center.align-items-center.fondo
+        // D I V    P R I N C I P A L     P A R A     D I V I D I R      D E N T R O     L A      P A G I N A
+        .row.flex-grow-1.d-flex.m-5.justify-content-center
+            h3.mb-5.text-center(style='font-size: 30px; font-weight: bold;')
+                | Más información sobre: #{iban}
+            // S E C C I Ó N       C O N        T O D A     L A      I N F O
+            .col-md-8
+                form(action="/actualizar/cuenta" method="POST")
+                    // S E C C I O N     I N F O R M A C I O N     P R I N C I P A L   (COMO LA QUE ESTA EN LA BDD)
+                    .row.g-3.mb-3
+                        .col-md-8
+                            .form-floating
+                                input#iban.form-control.fondoAmarillo.modificable(type='text' name='iban' value=iban readonly='')
+                                label(for='iban') IBAN
+                        .col-md-4
+                            .form-floating
+                                select#tipo.form-select.fondoAmarillo.modificable(disabled='' name='tipo')
+                                    option(selected='' disabled='' value=tipo) #{tipo}
+                                    option(value='AHORRO') Ahorro
+                                    option(value='NOMINA') Nomina
+                                    option(value='CORRIENTE') Corriente
+                                label(for='tipo') Tipo de cuenta
+                    .row.g-3.mb-3
+                        .col-md-6
+                            .form-floating
+                                input#creacion.form-control.fondoAmarillo.modificable(type='date' name='creacion' disabled='' value=fecha)
+                                label(for='creacion') Fecha de creación:
+                        .col-md-6
+                            .form-floating
+                                input#monto.form-control.fondoAmarillo.modificable.sin-flechas(type='number' readonly='' name='monto' value=dineroTotal required='')
+                                label(for='monto') Dinero total
+                    .row.g-3.mb-5.d-flex.align-items-center.justify-content-center.gap-md-5.gap-2
+                        a#btnBorrrar.btn.btn-primary.btn-danger.btn-lg.shadow-sm.col-md-3(href=`/baja/cuenta/${iban}`)
+                            | Borrar
+                        button#btnActualizar.btn.btn-primary.btn-warning.btn-lg.shadow-sm.col-md-3(type='button' onclick='mostrarConfirmar("cuentas")')
+                            | Actualizar
+                        a#btnCancelar.btn.btn-primary.btn-danger.btn-lg.shadow-sm.col-md-3.d-none(href=`/ampliacionCuentas/${iban}`)
+                            | Cancelar
+                        // E S T E   E N    U N    P R I N C I P I O     N O     E S    V I S I B L E
+                        button#btnConfirmar.btn.btn-primary.btn-success.btn-lg.shadow-sm.col-md-3.d-none(type='submit')
+                            | Confirmar
+
+                // S E C C I O N     I N F O R M A C I O N     P R I N C I P A L   (COMO LA QUE ESTA EN LA BDD)
+                // S E G U N D A     S E C C I O N     (acciones complementarias)
+                h5.mb-3.text-center(style='font-size: 30px; font-weight: bold;') Información adicional
+                .row.g-3.mb-3
+                    .col-md-6
+                        .form-floating
+                            input#participantesTotales.form-control.fondoAmarillo.sin-flechas(type='number' value=participantes readonly='')
+                            label(for='participantesTotales') Participantes totales:
+                    .col-md-6
+                        .form-floating
+                            select#participantes.form-select.fondoAmarillo.modificable()
+                                option(selected='' disabled='' value='') Seleccionar
+                            label(for='participantes') Participantes
+                .row.g-3.mb-3.d-flex.align-items-center.justify-content-center.gap-md-5.gap-2
+                    a#btnCrearCuenta.btn.btn-secondary.btn-lg.shadow-sm.col-md-3(href=`/cargarVinculoCuenta/${iban}`)
+                        | Añadir persona
+block scripts
+    script(src='/js/ampliaciones.js')
+    script.
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarParticipantes();
+        });
+    if error
+        script.
+            const mensajeError = "#{error}";
+            if (mensajeError) {
+                alert(mensajeError);
+            }

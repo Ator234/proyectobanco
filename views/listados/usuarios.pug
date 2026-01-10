@@ -1,0 +1,27 @@
+extends ../layout/index
+
+block contenido
+    main.flex-grow-1.d-flex.justify-content-center.flex-column.align-items-center.fondo
+        .d-grid.gap-3.col-6.col-md-4.mx-auto
+            a.btn.btn-danger.btn-lg.py-3.shadow-sm(href="/formularioUsuarios")
+                | AÑADIR USUARIO
+        .container
+            #contenedorTabla.mt-5
+block scripts
+    // Estos scripts SOLO se cargarán en esta página
+    link(href='https://unpkg.com/gridjs/dist/theme/mermaid.min.css' type='text/css' rel='stylesheet')
+    script(src='https://unpkg.com/gridjs/dist/gridjs.umd.js')
+    script(src='/js/listados.js')
+    script.
+        const datosParaLaTabla = !{JSON.stringify(usuarios)};
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Ahora pasamos la constante que acabamos de crear arriba
+            crearTablaUsuarios(datosParaLaTabla);
+        });
+    if error
+        script.
+            const mensajeError = "#{error}";
+            if (mensajeError) {
+                alert(mensajeError);
+            }

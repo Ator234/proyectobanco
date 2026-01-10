@@ -1,0 +1,65 @@
+extends ../layout/index
+
+block contenido
+    main.flex-grow-1.d-flex.justify-content-center.flex-column.align-items-center.py-5.fondo
+        .container
+            .row.justify-content-center
+                .col-lg-7.col-md-9
+                    .card.shadow-lg.border-0
+                        .card-header.text-center.py-4.text-white
+                            h3.mb-0
+                                i.bi.bi-arrow-left-right.me-2
+                                | Nueva Transacción
+                        .card-body.p-4.p-md-5
+                            form#formularioTransaccion(action="/transaccion/crear" method="POST")
+                                .row.g-3.mb-3
+                                    .col-md-8
+                                        .form-floating
+                                            input#dni.form-control(type='text' required='' oninput=`cargarCuentas('dni')` name='dni')
+                                            label(for='dni')
+                                                i.bi.bi-person-vcard.me-1
+                                                |  DNI Emisor
+                                    .col-md-4
+                                        .form-floating
+                                            input#cantidad.form-control(type='number' min='1' step='0.01' required='' name='cantidad')
+                                            label(for='cantidad')
+                                                i.bi.bi-currency-euro.me-1
+                                                |  Cantidad
+                                .mb-3
+                                    .form-floating
+                                        select#ibanEmisor.form-select(name='ibanEmisor' required='')
+                                            option(selected='' disabled='' value='') Seleccionar cuenta...
+                                        label(for='ibanEmisor') Cuenta de Origen
+                                .mb-3
+                                    .form-floating
+                                        input#ibanDestino.form-control(type='text' required='' oninput=`comprobarValidez('ibanDestino',18)` name='ibanDestino')
+                                        label(for='ibanDestino') IBAN Cuenta Destino
+                                .mb-3
+                                    .form-floating
+                                        input#creacion.form-control(type='date' required='' name='fecha')
+                                        label(for='creacion') Fecha de transacción
+                                .mb-4
+                                    .form-floating
+                                        input#descripcion.form-control(type='text' name='descripcion')
+                                        label(for='descripcion') Concepto / Descripción (Opcional)
+                                #contenedorContinuar.d-grid.gap-2
+                                    button.btn.btn-primary.btn-custom.btn-lg.shadow-sm(type='button' onclick='mostrarContra()')
+                                        | Continuar...
+                                #contenedorContra.d-none.mt-4.p-3.bg-light.rounded.border.border-danger.border-opacity-25
+                                    h5.text-danger.mb-3 Seguridad
+                                    .form-floating.mb-3
+                                        input#contra.form-control(type='password' disabled='' name='contra')
+                                        label(for='contra') Introduce tu clave de firma
+                                    .d-grid.gap-2
+                                        button#confirmar.btn.btn-primary.btn-custom.btn-lg.shadow-sm(type='submit')
+                                            | Confirmar y Enviar
+                                        button.btn.btn-link.text-secondary(type='button' onclick='cancelarContra()')
+                                            | Cancelar
+block scripts
+    script(src='/js/formularios.js')
+    if error
+        script.
+            const mensajeError = "#{error}";
+            if (mensajeError) {
+                alert(mensajeError);
+            }

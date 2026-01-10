@@ -1,0 +1,56 @@
+extends ../layout/index
+
+block contenido
+    main.flex-grow-1.d-flex.justify-content-center.align-items-center.fondo
+        // D I V    P R I N C I P A L     P A R A     D I V I D I R      D E N T R O     L A      P A G I N A
+        .row.flex-grow-1.d-flex.m-5.justify-content-center
+            h3.mb-5.text-center(style='font-size: 30px; font-weight: bold;')
+                | Más información sobre: #{dni} , #{iban}
+            // S E C C I Ó N       C O N        T O D A     L A      I N F O
+            .col-md-8
+                form(action="/actualizar/vinculo" method="POST")
+                    // S E C C I O N     I N F O R M A C I O N     P R I N C I P A L   (COMO LA QUE ESTA EN LA BDD)
+                    .row.g-3.mb-3
+                        .col-md-8
+                            .form-floating
+                                input#dni.form-control.fondoAmarillo(type='text' name='dni' value=dni readonly='')
+                                label(for='dni') DNI
+                        .col-md-4
+                            .form-floating
+                                input#participacion.form-control.fondoAmarillo.sin-flechas(type='number' name='participacion' value=participacion min='10' max='100' readonly='')
+                                label(for='participacion') Participación (En porcentaje)
+                    .row.g-3.mb-3
+                        .col-md-12
+                            .form-floating
+                                input#iban.form-control.fondoAmarillo(type='text' name='iban' value=iban readonly='')
+                                label(for='iban') IBAN
+                    .row.g-3.mb-5.d-flex.align-items-center.justify-content-center.gap-md-5.gap-2
+                        a#btnBorrrar.btn.btn-primary.btn-danger.btn-lg.shadow-sm.col-md-3(href=`/baja/vinculo/${dni}/${iban}`)
+                            | Borrar
+                        button#btnActualizar.btn.btn-primary.btn-warning.btn-lg.shadow-sm.col-md-3(type='button' onclick='mostrarConfirmar("vinculos")')
+                            | Actualizar
+                        a#btnCancelar.btn.btn-primary.btn-danger.btn-lg.shadow-sm.col-md-3.d-none(href=`/ampliacionVinculos/${dni}/${iban}`)
+                            | Cancelar
+                        // E S T E   E N    U N    P R I N C I P I O     N O     E S    V I S I B L E
+                        button#btnConfirmar.btn.btn-primary.btn-success.btn-lg.shadow-sm.col-md-3.d-none(type='submit')
+                            | Confirmar
+                // S E C C I O N     I N F O R M A C I O N     P R I N C I P A L   (COMO LA QUE ESTA EN LA BDD)
+                // S E G U N D A     S E C C I O N     (acciones complementarias)
+                h5.mb-3.text-center(style='font-size: 30px; font-weight: bold;') Información adicional
+                .row.g-3.mb-3
+                    .col-md-6
+                        .form-floating
+                            input#dineroUnico.form-control.fondoAmarillo.sin-flechas(type='number' value=dinero readonly='')
+                            label(for='dineroUnico') Dinero por este vínculo:
+                    .col-md-6
+                        .form-floating
+                            input#dineroTotal.form-control.fondoAmarillo.sin-flechas(type='number' value=dineroTotal readonly='')
+                            label(for='dineroTotal') Dinero total de esta cuenta:
+block scripts
+    script(src='/js/ampliaciones.js')
+    if error
+        script.
+            const mensajeError = "#{error}";
+            if (mensajeError) {
+                alert(mensajeError);
+            }

@@ -1,0 +1,68 @@
+extends ../layout/index
+
+block contenido
+    main.flex-grow-1.d-flex.justify-content-center.align-items-center.fondo
+        // D I V    P R I N C I P A L     P A R A     D I V I D I R      D E N T R O     L A      P A G I N A
+        .row.flex-grow-1.d-flex.m-5.justify-content-center
+            h3.mb-5.text-center(style='font-size: 30px; font-weight: bold;')
+                | Más información sobre: #{id}
+            // S E C C I Ó N       C O N        T O D A     L A      I N F O
+            .col-md-8
+                form(action="/reembolsar" method="POST")
+                    .row.g-3.mb-3
+                        .col-md-8
+                            .form-floating
+                                input#dni.form-control.fondoAmarillo(type='text' value=dni readonly='')
+                                label(for='dni')
+                                    i.bi.bi-person-vcard.me-1
+                                    |  DNI Emisor
+                        .col-md-4
+                            .form-floating
+                                input#cantidad.form-control.fondoAmarillo.sin-flechas(type='number' name='monto' min='1' value=monto step='0.01' readonly='')
+                                label(for='cantidad')
+                                    i.bi.bi-currency-euro.me-1
+                                    |  Cantidad
+                    .row.g-3.mb-3
+                        .col-md-8
+                            .form-floating
+                                input#ibanOrigen.form-control.fondoAmarillo(type='text' name='ibanOrigen' value=ibanOrigen readonly='')
+                                label(for='ibanOrigen') IBAN Cuenta Origen
+                        .col-md-4
+                            .form-floating
+                                input#creacion.form-control.fondoAmarillo(type='date' disabled='' value=fecha)
+                                label(for='creacion') Fecha de transacción
+                    .mb-3
+                        .form-floating
+                            input#ibanDestino.form-control.fondoAmarillo(type='text' name='ibanDestino' value=ibanDestino readonly='')
+                            label(for='ibanDestino') IBAN Cuenta Destino
+                    .row.g-3.mb-3
+                        .col-md-8
+                            .form-floating
+                                input#descripcion.form-control.fondoAmarillo(type='text' value=descripcion readonly='')
+                                label(for='descripcion') Concepto / Descripción (Opcional)
+                        .col-md-4
+                            .form-floating
+                                input#id.form-control.fondoAmarillo.sin-flechas(type='number' name='id' readonly='' value=id)
+                                label(for='id') ID
+                    // S E C C I O N     I N F O R M A C I O N     P R I N C I P A L   (COMO LA QUE ESTA EN LA BDD)
+                    // S E G U N D A     S E C C I O N     (acciones complementarias)
+                    h5.mb-3.text-center(style='font-size: 30px; font-weight: bold;') Información adicional
+                    .row.g-3.mt-2.mb-3
+                        .container.rounded.border.fondoAmarillo.text-center
+                            label.text-danger.my-2
+                                | &#x24D8; Los reembolsos de las transacciones solo podrán ser realizados en las 48h posteriores desde que se realizó la transacción.
+                    .row.g-3.mb-3.d-flex.align-items-center.justify-content-center.gap-md-5.gap-2
+                        button#btnTransaccion.btn.btn-secondary.btn-lg.shadow-sm.col-md-3(type='submit' disabled='')
+                            | Reembolsar transacción
+block scripts
+    script(src='/js/ampliaciones.js')
+    script.
+        document.addEventListener('DOMContentLoaded', () => {
+            calcularTiempo();
+        });
+    if error
+        script.
+            const mensajeError = "#{error}";
+            if (mensajeError) {
+                alert(mensajeError);
+            }

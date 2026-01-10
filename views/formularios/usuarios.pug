@@ -1,0 +1,49 @@
+extends ../layout/index
+
+block contenido
+    main.flex-grow-1.d-flex.justify-content-center.flex-column.align-items-center.fondo
+        .container
+            .row.justify-content-center
+                .col-lg-8.col-md-10
+                    .card.shadow-lg
+                        .card-header.text-center.py-4
+                            h3.mb-0 Registro de Usuario
+                        .card-body.p-4.p-md-5
+                            form(action="/usuario/crear" method="POST")
+                                .row.g-3.mb-3
+                                    .col-md-8
+                                        .form-floating
+                                            input#dni.form-control(type='text' oninput=`comprobarValidezUsuario('dni',9)` required='' name='dni')
+                                            label(for='dni') DNI
+                                    .col-md-4
+                                        .form-floating
+                                            input#edad.form-control(type='number' min='1' max='120' required='' name='edad')
+                                            label(for='edad') Edad
+                                .row.g-3.mb-3
+                                    .col-md-6
+                                        .form-floating
+                                            input#nombre.form-control(type='text' required='' name='nombre')
+                                            label(for='nombre') Nombre
+                                    .col-md-6
+                                        .form-floating
+                                            input#apellidos.form-control(type='text' required='' name='apellidos')
+                                            label(for='apellidos') Apellidos
+                                .mb-4
+                                    .form-floating
+                                        input#direccion.form-control(type='text' required='' name='direccion')
+                                        label(for='direccion') Dirección Completa
+                                .mb-4
+                                    .form-floating
+                                        input#contra.form-control(type='password' required='' name='contra')
+                                        label(for='contra') Contraseña
+                                .d-grid.gap-2
+                                    button#confirmar.btn.btn-primary.btn-custom.btn-lg.shadow-sm(type='submit')
+                                        | Dar de alta
+block scripts
+    script(src='/js/formularios.js')
+    if error
+        script.
+            const mensajeError = "#{error}";
+            if (mensajeError) {
+                alert(mensajeError);
+            }

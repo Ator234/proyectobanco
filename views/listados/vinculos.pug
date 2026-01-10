@@ -1,0 +1,22 @@
+extends ../layout/index
+
+block contenido
+    main.flex-grow-1.d-flex.justify-content-center.flex-column.align-items-center.fondo
+        .d-grid.gap-3.col-6.col-md-4.mx-auto
+            a.btn.btn-danger.btn-lg.py-3.shadow-sm(href="/formularioVinculos")
+                | AÑADIR VINCULO
+        .container
+            #contenedorTabla.mt-5
+block scripts
+    // Estos scripts SOLO se cargarán en esta página
+    link(href='https://unpkg.com/gridjs/dist/theme/mermaid.min.css' type='text/css' rel='stylesheet')
+    script(src='https://unpkg.com/gridjs/dist/gridjs.umd.js')
+    script(src='/js/listados.js')
+    script.
+        //Creo una variable con los datos que enviamos desde el servidor
+        const datosParaLaTabla = !{JSON.stringify(vinculos)};
+
+        document.addEventListener('DOMContentLoaded', () => {
+            //Mando esa variable a mi función
+            crearTablaVinculos(datosParaLaTabla);
+        });
